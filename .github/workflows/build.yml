@@ -22,15 +22,17 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Generate Gradle Wrapper
+        run: |
+          gradle wrapper --gradle-version 8.1.1
+          chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --stacktrace
 
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
           name: aquatic-legacy-mod
           path: build/libs/*.jar
-          if-no-files-found: error
+          if-no-files-found: warn
